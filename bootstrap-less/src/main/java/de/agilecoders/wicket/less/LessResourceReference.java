@@ -1,7 +1,13 @@
 package de.agilecoders.wicket.less;
 
+import org.apache.wicket.markup.head.HeaderItem;
+import org.apache.wicket.markup.head.IReferenceHeaderItem;
 import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.IResource;
+import org.apache.wicket.request.resource.ResourceReference;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -13,13 +19,6 @@ import java.util.Locale;
  */
 public class LessResourceReference extends CssResourceReference {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * special variation which triggers the {@link LessResourceStreamLocator} to compile
-     * the less files.
-     */
-    @Deprecated
-    public static final String VARIATION = "less";
 
     /**
      * Construct.
@@ -55,6 +54,47 @@ public class LessResourceReference extends CssResourceReference {
 
     @Override
     public LessPackageResource getResource() {
-        return new LessPackageResource(getScope(), getName(), getLocale(), getStyle(), getVariation());
+        return new LessPackageResource(getScope(), getName(), getLocale(), getStyle(), getVariation(), getImports());
+    }
+
+    private List<LessPackageResource> getImports() {
+        List<LessPackageResource> imports = new ArrayList<LessPackageResource>();
+
+        Iterable <HeaderItem> lessDependencies = getLessDependencies();
+        for (HeaderItem lessDependency : lessDependencies) {
+
+            if (lessDependency instanceof IReferenceHeaderItem) {
+
+                IReferenceHeaderItem referenceHeaderItem = (IReferenceHeaderItem) lessDependency;
+                ResourceReference reference = referenceHeaderItem.getReference();
+                IResource resource = reference.getResource();
+
+                if (resource instanceof LessPackageResource) {
+                    LessPackageResource lessPackageResource = (LessPackageResource) resource;
+                    imports.add(lessPackageResource);
+                }
+            }
+        }
+
+        return imports;
+    }
+
+    private Iterable<HeaderItem> getLessDependencies() {
+        List<HeaderItem> lessDependencies = new ArrayList<HeaderItem>();
+
+        for (HeaderItem dep : super.getDependencies()) {
+
+            if (dep instanceof IReferenceHeaderItem) {
+
+                IReferenceHeaderItem referenceHeaderItem = (IReferenceHeaderItem) dep;
+                ResourceReference reference = referenceHeaderItem.getReference();
+
+                if (reference instanceof LessResourceReference) {
+                    lessDependencies.add(dep);
+                }
+            }
+        }
+
+        return lessDependencies;
     }
 }
