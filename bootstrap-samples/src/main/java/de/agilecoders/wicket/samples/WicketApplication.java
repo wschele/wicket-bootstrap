@@ -94,6 +94,7 @@ public class WicketApplication extends WebApplication {
 
         // deactivate ajax debug mode
         getDebugSettings().setAjaxDebugModeEnabled(false);
+        getDebugSettings().setComponentUseCheck(false);
 
         configureBootstrap();
         configureResourceBundles();

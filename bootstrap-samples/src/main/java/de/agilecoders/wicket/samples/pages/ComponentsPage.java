@@ -21,6 +21,8 @@ import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -65,7 +67,7 @@ public class ComponentsPage extends BasePage {
 
     private Component newClientSideTabs(String markupId) {
         return new ClientSideBootstrapTabbedPanel<AbstractTab>(markupId, Lists.<AbstractTab>newArrayList(
-                createTab("Section 1"), createTab("Section 2"), createTab("Section 3")
+                createClientSideTab("Section 1"), createClientSideTab("Section 2"), createClientSideTab("Section 3")
         ));
     }
     
@@ -79,6 +81,17 @@ public class ComponentsPage extends BasePage {
                         replaceComponentTagBody(markupStream, openTag, "<br/>I'm in " + title);
                     }
                 };
+            }
+        };
+    }
+
+    private AbstractTab createClientSideTab(final String title) {
+        return new AbstractTab(Model.of(title)) {
+            @Override
+            public WebMarkupContainer getPanel(String panelId) {
+                WebMarkupContainer panel = new WebMarkupContainer(panelId);
+                panel.add(new MultiLineLabel("panels", "\nI'm in " + title));
+                return panel;
             }
         };
     }
