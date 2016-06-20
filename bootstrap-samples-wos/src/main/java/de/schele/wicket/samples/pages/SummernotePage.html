@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Summernote Page</title>
+</head>
+<body>
+<wicket:extend>
+    <header class="jumbotron subhead" id="overview">
+        <div class="container">
+            <h1>Rich Editor for Bootstrap3</h1>
+
+            <p class="lead">
+                The <a href="https://github.com/summernote/summernote" target="_blank">Summernote editor</a>. <br/>
+            </p>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <form wicket:id="form">
+                    <textarea wicket:id="summernote"></textarea>
+                    <input wicket:id="submit" type="submit" value="submit"/>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" wicket:id="feedback"></div>
+        </div>
+
+        <br/>
+        <hr/>
+        <br/>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form wicket:id="formAirMode">
+                    <fieldset>
+                        <legend>Summernote in Air Mode. Type text inline and select word(s) to style</legend>
+                        <textarea wicket:id="summernoteAirMode"></textarea>
+                        <br/>
+                        <input wicket:id="submitAirMode" type="submit" value="submit"/>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" wicket:id="feedbackAirMode"></div>
+        </div>
+    </div>
+</wicket:extend>
+</body>
+</html>
